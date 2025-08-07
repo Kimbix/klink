@@ -89,7 +89,7 @@ func PrintHelp(node *CliNode) {
 	}
 }
 
-func processNode(node *CliNode, actions []string, flags map[string]string) {
+func ProcessNode(node *CliNode, actions []string, flags map[string]string) {
 	// If has action, go no lower
 	if node.action != nil {
 		// fmt.Printf("\tProcessing action for node %s\n", node.name)
@@ -106,7 +106,7 @@ func processNode(node *CliNode, actions []string, flags map[string]string) {
 	action := actions[0]
 	for _, v := range node.options {
 		if v.name == action {
-			processNode(v, actions[1:], flags)
+			ProcessNode(v, actions[1:], flags)
 			return
 		}
 	}
