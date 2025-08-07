@@ -69,23 +69,23 @@ func GetFlags() map[string]string {
 	return flags
 }
 
-func CreateApplication(name string, description string, options []*CliNode, action CliFunction, flags []CliFlag) *CliNode {
+func CreateApplication(name string, description string, action CliFunction) *CliNode {
 	return &CliNode{
 		name:        name,
 		description: description,
-		options:     options,
+		options:     []*CliNode{},
 		action:      action,
-		flags:       flags,
+		flags:       []CliFlag{},
 	}
 }
 
-func SubNode(parent *CliNode, name string, description string, options []*CliNode, action CliFunction, flags []CliFlag) *CliNode {
+func SubNode(parent *CliNode, name string, description string, action CliFunction) *CliNode {
 	newNode := &CliNode{
 		name:        name,
 		description: description,
-		options:     options,
+		options:     []*CliNode{},
 		action:      action,
-		flags:       flags,
+		flags:       []CliFlag{},
 	}
 	parent.options = append(parent.options, newNode)
 	return newNode
