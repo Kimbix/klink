@@ -13,7 +13,7 @@ type CliNode struct {
 	description string
 	options     []*CliNode
 	action      CliFunction
-	flag        []CliFlag
+	flags       []CliFlag
 }
 
 type CliFlag struct {
@@ -69,9 +69,26 @@ func GetFlags() map[string]string {
 	return flags
 }
 
-func SubNode(parent *CliNode, node *CliNode) *CliNode {
-	parent.options = append(parent.options, node)
-	return node
+func CreateApplication(name string, description string, options []*CliNode, action CliFunction, flags []CliFlag) *CliNode {
+	return &CliNode{
+		name:        name,
+		description: description,
+		options:     options,
+		action:      action,
+		flags:       flags,
+	}
+}
+
+func SubNode(parent *CliNode, name string, description string, options []*CliNode, action CliFunction, flags []CliFlag) *CliNode {
+	newNode := &CliNode{
+		name:        name,
+		description: description,
+		options:     options,
+		action:      action,
+		flags:       flags,
+	}
+	parent.options = append(parent.options, newNode)
+	return newNode
 }
 
 func PrintHelp(node *CliNode) {
@@ -84,7 +101,7 @@ func PrintHelp(node *CliNode) {
 	fmt.Println("")
 
 	fmt.Println("Flags:")
-	for _, v := range node.flag {
+	for _, v := range node.flags {
 		fmt.Printf("  %-10s %-24s\n", v.name, v.description)
 	}
 }
