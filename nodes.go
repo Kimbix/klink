@@ -107,25 +107,32 @@ func PrintHelp(node *CliNode) {
 }
 
 func ProcessNode(node *CliNode, actions []string, flags map[string]string) {
-	// If has action, go no lower
-	if node.action != nil {
-		// fmt.Printf("\tProcessing action for node %s\n", node.name)
+	// If no more args but has action -> run it
+	if len(actions) == 0 && node.action != nil {
 		node.action(actions, flags)
 		return
 	}
 
-	// If no more actions, don't even bother looping
+	// If no more actions but no action, don't even loop
 	if len(actions) == 0 {
 		PrintHelp(node)
 		return
 	}
 
+	// Loop to see if they match
 	action := actions[0]
 	for _, v := range node.options {
 		if v.name == action {
 			ProcessNode(v, actions[1:], flags)
 			return
 		}
+	}
+
+	// If none match, but there is an action on this node, run it
+	if node.action != nil {
+		// fmt.Printf("\tProcessing action for node %s\n", node.name)
+		node.action(actions, flags)
+		return
 	}
 
 	// If all else failed, just print the help for the current node
