@@ -21,7 +21,7 @@ type CliFlag struct {
 	description string
 }
 
-func getActions() []string {
+func GetActions() []string {
 	args := os.Args[1:]
 	actions := []string{}
 	for k, v := range args {
@@ -46,7 +46,7 @@ func getActions() []string {
 	return actions
 }
 
-func getFlags() map[string]string {
+func GetFlags() map[string]string {
 	args := os.Args
 	flags := map[string]string{}
 
@@ -68,13 +68,13 @@ func getFlags() map[string]string {
 	}
 	return flags
 }
-func subNode(parent *CliNode, node *CliNode) *CliNode {
 
+func SubNode(parent *CliNode, node *CliNode) *CliNode {
 	parent.options = append(parent.options, node)
 	return node
 }
 
-func printHelp(node *CliNode) {
+func PrintHelp(node *CliNode) {
 	fmt.Printf("%s\n\n", node.description)
 
 	fmt.Println("Available commands:")
@@ -99,7 +99,7 @@ func processNode(node *CliNode, actions []string, flags map[string]string) {
 
 	// If no more actions, don't even bother looping
 	if len(actions) == 0 {
-		printHelp(node)
+		PrintHelp(node)
 		return
 	}
 
@@ -112,5 +112,5 @@ func processNode(node *CliNode, actions []string, flags map[string]string) {
 	}
 
 	// If all else failed, just print the help for the current node
-	printHelp(node)
+	PrintHelp(node)
 }
